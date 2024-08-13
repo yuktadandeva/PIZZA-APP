@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { getApiCall } from '../../../shared/services/api-client'
 import {Products} from './Products'
 import { Cart } from '../../cart/Cart'
-
+import { cartContext } from '../../cart/cart-context/cart-context'
 
 export const DashBoard = () => {
 useEffect(()=>{
@@ -15,6 +15,15 @@ getPizzas();
 const [loading, setLoading] = useState(true);
 const [pizzas, setPizzas] = useState({});
 const [error, setError] = useState();
+const [cart, setCart]= useState([]);
+
+const addCart = (product)=>{
+  console.log("dashboard product", product);
+  const cartClone = [...cart];
+  cartClone.push(product.pizza);
+  setCart(cartClone);
+  console.log(cartClone);
+}
 
 const getPizzas = async ()=>{
   try{
@@ -30,6 +39,7 @@ const getPizzas = async ()=>{
   return (
     <div className='container'>
        <Header></Header> 
+       <cartContext.Provider value={{cart:cart, addCart:addCart}}>
       <div className="row">
        <div className="col-9">
         <div className="row">
@@ -41,6 +51,7 @@ const getPizzas = async ()=>{
         <Cart/>
        </div>
       </div>
+      </cartContext.Provider>
     </div>
   )
 }
