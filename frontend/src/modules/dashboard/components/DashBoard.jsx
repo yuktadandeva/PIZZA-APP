@@ -18,12 +18,23 @@ const [error, setError] = useState();
 const [cart, setCart]= useState([]);
 
 const addCart = (product)=>{
-  console.log("dashboard product", product);
+ 
   const cartClone = [...cart];
   cartClone.push(product.pizza);
   setCart(cartClone);
   console.log(cartClone);
 }
+const removeCart = (pizza)=>{
+
+  const cartClone = [...cart];
+  const updatedCart=cartClone.filter(product => {
+    return product._id !== pizza.product._id;
+  })
+  setCart(updatedCart)
+}
+useEffect(()=>{
+  console.log(cart)
+}, [cart])
 
 const getPizzas = async ()=>{
   try{
@@ -39,7 +50,7 @@ const getPizzas = async ()=>{
   return (
     <div className='container'>
        <Header></Header> 
-       <cartContext.Provider value={{cart:cart, addCart:addCart}}>
+       <cartContext.Provider value={{cart:cart, addCart:addCart, removeCart: removeCart}}>
       <div className="row">
        <div className="col-9">
         <div className="row">
